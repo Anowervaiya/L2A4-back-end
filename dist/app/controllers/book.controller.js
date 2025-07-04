@@ -16,9 +16,8 @@ exports.bookRoutes = void 0;
 const express_1 = __importDefault(require("express"));
 const book_model_1 = require("../models/book.model");
 exports.bookRoutes = express_1.default.Router();
-exports.bookRoutes.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.bookRoutes.post('/create-book', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = req.body;
-    console.log(body);
     const book = yield book_model_1.Book.create(body);
     res.status(201).json({
         success: true,
@@ -26,22 +25,25 @@ exports.bookRoutes.post('/', (req, res) => __awaiter(void 0, void 0, void 0, fun
         data: book,
     });
 }));
-exports.bookRoutes.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const filter = req.query.filter;
-    const sortBy = req.query.sortBy;
-    const sortOrder = req.query.sort === 'asc' ? 1 : -1;
-    const limit = parseInt(req.query.limit) || 10;
-    const books = yield book_model_1.Book.find({ genre: filter })
-        .sort({ [sortBy]: sortOrder })
-        .limit(limit);
+exports.bookRoutes.get('/books', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // const filter = req.query.filter;
+    // const sortBy = req.query.sortBy as string;
+    // const sortOrder = req.query.sort === 'asc' ? 1 : -1;
+    // const limit = parseInt(req.query.limit as string) || 10;
+    const books = yield book_model_1.Book.find();
+    // {
+    //   genre: filter;
+    // } inside find()
+    // .sort({ [sortBy]: sortOrder })
+    // .limit(limit);
     res.status(201).json({
         success: true,
         message: 'All book retreived successfuly',
         data: books,
     });
 }));
-exports.bookRoutes.get('/:bookId', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const bookId = req.params.bookId;
+exports.bookRoutes.get('/books/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const bookId = req.params.id;
     const books = yield book_model_1.Book.findById(bookId);
     res.status(201).json({
         success: true,
@@ -49,8 +51,8 @@ exports.bookRoutes.get('/:bookId', (req, res) => __awaiter(void 0, void 0, void 
         data: books,
     });
 }));
-exports.bookRoutes.put('/:bookId', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const bookId = req.params.bookId;
+exports.bookRoutes.put('/edit-book/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const bookId = req.params.id;
     const updatedBook = req.body;
     const book = yield book_model_1.Book.findByIdAndUpdate(bookId, updatedBook, { new: true });
     res.status(201).json({
@@ -59,7 +61,7 @@ exports.bookRoutes.put('/:bookId', (req, res) => __awaiter(void 0, void 0, void 
         data: book,
     });
 }));
-exports.bookRoutes.delete('/:bookId', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.bookRoutes.delete('/books/:bookId', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const bookId = req.params.bookId;
     const book = yield book_model_1.Book.findByIdAndDelete(bookId);
     res.status(201).json({

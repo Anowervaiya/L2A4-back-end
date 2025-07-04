@@ -57,6 +57,7 @@ const bookSchema = new mongoose_1.Schema({
 });
 bookSchema.statics.borrowCopies = function (bookId, quantity) {
     return __awaiter(this, void 0, void 0, function* () {
+        console.log(bookId);
         const book = yield this.findById(bookId);
         if (!book)
             throw new Error('Book not found');
@@ -65,8 +66,7 @@ bookSchema.statics.borrowCopies = function (bookId, quantity) {
         }
         book.copies -= quantity;
         if (book.copies === 0) {
-            book.available = false;
-            throw new Error('Not enough copies available');
+            book.available = false; // mark as unavailable but don't throw
         }
         yield book.save();
     });

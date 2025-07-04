@@ -9,8 +9,8 @@ borrowBook.post('/borrow', async (req: Request, res: Response) => {
 
   try {
     const { book: bookId, quantity, dueDate } = req.body;
-    const data = req.body;
-console.log(data);
+    
+
    await Book.borrowCopies( bookId, quantity);
 
     const borrow = await Borrow.create({ book: bookId, quantity, dueDate });
