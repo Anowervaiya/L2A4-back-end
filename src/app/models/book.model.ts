@@ -54,8 +54,9 @@ bookSchema.statics.borrowCopies = async function (
   bookId: string,
   quantity: number
 ) {
+  console.log(bookId);
   const book = await this.findById(bookId);
- 
+
   if (!book) throw new Error('Book not found');
 
   if (book.copies < quantity) {
@@ -63,9 +64,9 @@ bookSchema.statics.borrowCopies = async function (
   }
 
   book.copies -= quantity;
+
   if (book.copies === 0) {
-    book.available = false;
-    throw new Error('Not enough copies available');
+    book.available = false; // mark as unavailable but don't throw
   }
 
   await book.save();

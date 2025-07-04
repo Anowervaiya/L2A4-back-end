@@ -4,13 +4,14 @@ import { Borrow } from '../models/borrow.model';
 
 export const borrowBook = express.Router();
 
-borrowBook.post('/', async (req: Request, res: Response) => {
+borrowBook.post('/borrow', async (req: Request, res: Response) => {
 
-  
+
   try {
     const { book: bookId, quantity, dueDate } = req.body;
-
-   await Book.borrowCopies(bookId, quantity);
+    const data = req.body;
+console.log(data);
+   await Book.borrowCopies( bookId, quantity);
 
     const borrow = await Borrow.create({ book: bookId, quantity, dueDate });
 
